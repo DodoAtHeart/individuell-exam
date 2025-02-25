@@ -23,7 +23,11 @@ body {
     max-width: 100%;
 }
 
-h2, h3 {
+h1, h2, h3, h4, h5 {
+    color: white;
+}
+
+p {
     color: white;
 }
 
@@ -32,6 +36,24 @@ h2, h3 {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
+}
+
+.movie-flex {
+    display: flex;
+    flex-direction: row;
+    gap: 2%;
+    margin-top: 5%;
+    align-items: center;
+}
+
+.movie-plot {
+    max-width: 75%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.movie-actors {
+    max-width: 30%;
 }
 
 .movie-card {

@@ -9,8 +9,7 @@
       src="https://kit.fontawesome.com/f300007e95.js"
       crossorigin="anonymous"
     ></script>
-    <script type="module" src="./scripts/script.js"></script>
-    <script type="module" src="./scripts/api.js"></script>
+    <script type="module" src="./scripts/modules/movie.js"></script>
   </head>
   <body>
     <header>
@@ -21,10 +20,11 @@
       </header>
 
     <!-- Movie Detailed Informatin -->
-    <section>
-      <div class="content-wrapper">
-        <section class="movie-information" id="movieInformation"></section>
-      </div>
+    <section class="content-wrapper">
+      <article class="movie-flex">
+        <div id="posterWrapper"></div>
+        <div class="movie-information" id="movieInformation"></div>
+      </article>
     </section>
   </body>
 </html>
