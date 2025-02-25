@@ -28,6 +28,28 @@ h2, h3 {
 }
 
 /* Utils */
+#cardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.movie-card {
+    width: 33%;
+    box-sizing: border-box;
+    padding: 10px;
+    text-align: center;
+}
+
+.movie-poster {
+    width: 100%;
+    height: auto;
+}
+
+.movie-title {
+    text-align: center;
+}
+
 .content-wrapper {
     max-width: 1180px;
     margin: 0 auto;
@@ -85,4 +107,18 @@ h2, h3 {
     background: none;
     border: none;
     cursor: pointer;
+}
+
+/* Responsivitet */
+
+@media (max-width: 1024px) {
+    .movie-card {
+        width: calc(50% - 16px); /* 2 items per row on medium screens */
+    }
+}
+
+@media (max-width: 600px) {
+    .movie-card {
+        width: 100%; /* 1 item per row on small screens */
+    }
 }
