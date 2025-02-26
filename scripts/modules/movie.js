@@ -1,14 +1,13 @@
 console.log('Start log')
 
 const getUrl = new URL(window.location.href);
-// console.log(getUrl.searchParams.get('imdbID'));
 const getUrlParam = `${getUrl.searchParams.get('imdbID')}`
 
 fetch(`http://www.omdbapi.com/?apikey=adc90226&i=` + getUrlParam + "&plot=full")
     .then(response => response.json())
     .then(data => {
         displayMovieData(data)
-    }) 
+    })  
     .catch(error => {
         console.error('Could not fetch data:', error);
     })
@@ -16,7 +15,7 @@ fetch(`http://www.omdbapi.com/?apikey=adc90226&i=` + getUrlParam + "&plot=full")
 
 console.log('display parameters start')
 
-function displayMovieData(movieData) {
+export function displayMovieData(movieData) {
     console.log(movieData)
 // Wrapper
     const movieContainer = document.getElementById('movieInformation')

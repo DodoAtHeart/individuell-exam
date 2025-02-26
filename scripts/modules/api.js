@@ -34,6 +34,14 @@ function getRandomTrailers(movies) {
 }
 // Slut Generera 5 random trailers
 
+// Add favorite
+
+// gör ett toggle event, om värdet är true skicka det till localstore favs[]
+// om det är false, ta bort från localstorage favs[]
+// hitta en stjärnikon som är tom och en full för det visuella
+
+// End add favorite
+
 // Genererar top 20 listan och trycker ut på index. Låter slumpningen vänta tills jag är färdig med grundfunktionaliteten
 function getTopList(movies) {
 
@@ -42,13 +50,13 @@ function getTopList(movies) {
 
     topMovies.forEach((movie, index) => {
 // Card element 
-        const card = document.createElement("article");
+        const card = document.createElement("div");
         card.classList.add("movie-card");
         card.setAttribute('data-id', movie.imdbID);
         card.addEventListener("click", function() {
-            window.location.href = "movie.html?imdbID=" + movie.imdbID    
-                     
+            window.location.href = "movie.html?imdbID=" + movie.imdbID                 
         })   
+
 // Titel element
         const title = document.createElement("h3");
         title.classList.add("movie-title")
@@ -58,16 +66,52 @@ function getTopList(movies) {
         poster.src = movie.Poster;
         poster.alt = `${movie.Title} poster`;
         poster.classList.add("movie-poster");
+// Add to favorites element
+        const favoriteBtn = document.createElement("button");
+        favoriteBtn.textContent = "Add to Favorites";
+        favoriteBtn.classList.add("favorite-btn");
+        favoriteBtn.addEventListener("click", function(event) {
+            event.stopPropagation(); // Stoppar card.click
+            addToFavorites(movie); 
+});
 
         card.appendChild(poster);
         card.appendChild(title);
+        card.appendChild(favoriteBtn);
         cardContainer.appendChild(card);
-
     });
 }
 getMovieList()
 
 // Slut top 20 
+
+function addToFavorites(movie) {
+    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+    if (!favorites.response(data.imdbID)) {
+        favorites.setAttribute('favorite-id', movie.imdbID);
+        favorites.push(movie.imdbID);
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+
+        displayFavorites();
+
+    } else { 
+        alert("This is already a favorite")
+    }
+}
+
+function displayFavorites() {
+    const favoritesList = JSON.parse(localStorage.getItem("favoriteMovieList"));
+    favoritesList.innerHTML = '';
+
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+    favorites.forEach((movie) => {
+        const list = document.createElement('li');
+        list.textContent = movie.Title;
+        favoritesList.appendChild(list);
+    })
+}
 
 // Hämtar OMDB's api
 // Nyckelring: imdbID
@@ -76,23 +120,24 @@ getMovieList()
     // const broadSearchAPI = "http://www.omdbapi.com/?apikey=adc90226&"; // Glöm inte att lägga till submitten
     // const searchInput = document.getElementById('searchInput');
     // const searchBtn = document.getElementById('searchBtn');
-    const broadSearchResults = // Skicka till Search och använd cards
+    // Skicka till Search och använd cards
 console.log('broadSearch start')
 async function fetchBroadSearch(query) {
 
     const broadSearchAPI = "http://www.omdbapi.com/?apikey=adc90226&"; // Glöm inte att lägga till submitten
     const searchInput = document.getElementById('searchInput');
     const searchBtn = document.getElementById('searchBtn');
-    // const broadSearchResults = document // Skicka till Search och använd cards
+    
 
     try  {
+        const query = document.getElementById('searchInput').innerText
         const response = await fetch(`${broadSearchAPI}&s=${query}`);
         const data = await response.json();
 1
         if (data.response === "True") {
-            displayBroadSearch(data);
+            displayBroadSearch();
         } else {
-            broadSearchResults.innerHTML = '<li>Not found</li>';
+            console.error('list not found');
         }
     } catch (error) {
         console.error('Could not fetch data:', error);
@@ -104,9 +149,8 @@ console.log('broadSearch end')
 
 // Visa sökresultat för bred sökning
 function displayBroadSearch(data) {
-    broadSearchResults.innerHTML = '' // Rensa innerhtml
+    // broadSearchResults.innerHTML = '' // Rensa innerhtml
     const broadSearchContainer = document.getElementById('searchContainer');
-
 
     data.search.forEach(result => {
         broadSearchContainer.classList.add('card');
@@ -123,6 +167,7 @@ function displayBroadSearch(data) {
 // Eventlyssnare för sökknappen och enterknapp
 
 searchBtn.addEventListener('click', () => {
+    event.preventDefault();
     const query = searchInput.value.trim();
     if (query) {
         fetchBroadSearch(query);

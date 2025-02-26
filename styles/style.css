@@ -43,7 +43,7 @@ p {
     flex-direction: row;
     gap: 2%;
     margin-top: 5%;
-    align-items: center;
+    /* align-items: center; */ 
 }
 
 .movie-plot {
