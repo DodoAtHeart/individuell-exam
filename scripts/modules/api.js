@@ -18,7 +18,7 @@ export async function getMovieList() {
         console.log("Error fetching movies", error.message);
     }
 }
-// Slut på inhämtning
+
 
 // Generera 5 random trailers
 function getRandomTrailers(movies) {
@@ -32,67 +32,138 @@ function getRandomTrailers(movies) {
         renderTrailers(movie, index)
     });
 }
-// Slut Generera 5 random trailers
 
-// Genererar top 20 listan och trycker ut på index. Låter slumpningen vänta tills jag är färdig med grundfunktionaliteten
+// Genererar topplistan
 function getTopList(movies) {
 
-    const topMovies = movies.slice(0, 20);
+    const topMovies = movies.slice(0, 10);
     const cardContainer = document.getElementById("cardContainer");
-
+    
     topMovies.forEach((movie, index) => {
 // Card element 
-        const card = document.createElement("article");
+        const card = document.createElement("div");
         card.classList.add("movie-card");
         card.setAttribute('data-id', movie.imdbID);
         card.addEventListener("click", function() {
-            window.location.href = "movie.html?imdbID=" + movie.imdbID    
-                     
+            window.location.href = "movie.html?imdbID=" + movie.imdbID                 
         })   
-// Titel element
+
+        // Title element
         const title = document.createElement("h3");
         title.classList.add("movie-title")
-        title.textContent = `${movie.Title}`;
-// Poster element
+        title.textContent = movie.Title;
+
+        // Add to favorites element
+        const addToFavoritesIcon = document.createElement("button");
+        addToFavoritesIcon.classList.add("favBtnToggle");
+        addToFavoritesIcon.innerHTML = "+"
+
+        // Poster element
         const poster = document.createElement("img");
         poster.src = movie.Poster;
+        poster.onerror = "./res/icons/missing-poster.svg"
         poster.alt = `${movie.Title} poster`;
         poster.classList.add("movie-poster");
 
+
+        // Display appended objects
         card.appendChild(poster);
         card.appendChild(title);
         cardContainer.appendChild(card);
-
+        card.appendChild(addToFavoritesIcon)
     });
 }
 getMovieList()
+// Slut toplista
 
-// Slut top 20 
+// Add favorite
 
-// Hämtar OMDB's api
-// Nyckelring: imdbID
-// Nyckelring: http://www.omdbapi.com/?apikey=[yourkey]&s=[söksträng]          - Bred sökning
-// Nyckelring: http://www.omdbapi.com/?apikey=[yourkey]&plot=full&i=[imdb-ID]  - Specifik sökning
-    // const broadSearchAPI = "http://www.omdbapi.com/?apikey=adc90226&"; // Glöm inte att lägga till submitten
-    // const searchInput = document.getElementById('searchInput');
-    // const searchBtn = document.getElementById('searchBtn');
-    const broadSearchResults = // Skicka till Search och använd cards
+// gör ett toggle event på facBtnToggle, om värdet är is-favorite true, skicka till localstorage
+// om det är false, ta bort från localstorage favs[]
+function addToFavorites(event) {
+    event.preventDefault();
+
+    if (e.target.classList.contains('favBtnToggle')) {
+        if (e.target.classList.contains('is-favorite')) {
+
+            e.target.classList.remove('is-favorite');
+        } else {
+            // Class add
+            e.target.classList.remove('is-favorite');
+        }
+    } 
+    // When favBtnToggle is clicked
+    if(e.target.classList.contains('favBtnToggle')) {
+        console.log('pling')
+    }
+}
+
+
+// function favToggle(imdbID) {
+
+//     let myFavorites = JSON.parse(localStorage.getItem('myFavorites')) || [];
+//     const favIndex = myFavorites.indexOf(imdbID);
+
+//     if (favIndex === -1) {
+//         myFavorites.push(imdbID);
+//         console.log(`${imdbID} added to favorites`);
+//     } else {
+//         myFavorites.splice(favIndex, 1);
+//         console.log(`${imdbID} has been removed from favorites`)
+//     }
+
+//     localStorage.setItem('myFavorites', JSON.stringify(myFavorites));
+// }
+
+// function addToFavorites(movie) {
+//     let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+//     if (!favorites.response(data.imdbID)) {
+//         favorites.setAttribute('favorite-id', movie.imdbID);
+//         favorites.push(movie.imdbID);
+//         localStorage.setItem("favorites", JSON.stringify(favorites));
+
+//         displayFavorites();
+
+//     } else { 
+//         alert("This is already a favorite")
+//     }
+// }
+
+// function displayFavorites() {
+//     const favoritesList = JSON.parse(localStorage.getItem("favoriteMovieList"));
+//     favoritesList.innerHTML = '';
+
+//     const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+//     favorites.forEach((movie) => {
+//         const list = document.createElement('li');
+//         list.textContent = movie.Title;
+//         favoritesList.appendChild(list);
+//     })
+// }
+
+
+// End add favorite
+
+    // Skicka till Search och använd cards
 console.log('broadSearch start')
 async function fetchBroadSearch(query) {
 
     const broadSearchAPI = "http://www.omdbapi.com/?apikey=adc90226&"; // Glöm inte att lägga till submitten
     const searchInput = document.getElementById('searchInput');
     const searchBtn = document.getElementById('searchBtn');
-    // const broadSearchResults = document // Skicka till Search och använd cards
+    
 
     try  {
+        const query = document.getElementById('searchInput').innerText
         const response = await fetch(`${broadSearchAPI}&s=${query}`);
         const data = await response.json();
 1
         if (data.response === "True") {
-            displayBroadSearch(data);
+            displayBroadSearch();
         } else {
-            broadSearchResults.innerHTML = '<li>Not found</li>';
+            console.error('list not found');
         }
     } catch (error) {
         console.error('Could not fetch data:', error);
@@ -104,35 +175,38 @@ console.log('broadSearch end')
 
 // Visa sökresultat för bred sökning
 function displayBroadSearch(data) {
-    broadSearchResults.innerHTML = '' // Rensa innerhtml
+    // broadSearchResults.innerHTML = '' // Rensa innerhtml
     const broadSearchContainer = document.getElementById('searchContainer');
-
 
     data.search.forEach(result => {
         broadSearchContainer.classList.add('card');
         broadSearchContainer.innerHTML= `
             <h3>${result.Title}</h3>
-            <img src="${result.Poster}" alt="${result.Title}" />
+            <img src="${result.Poster}" alt="${result.Title}"/>
         `;
         broadSearchResults.appendChild(broadList);
     })
-
 }
 // Slut Visa sökresultat för bred sökning
 
 // Eventlyssnare för sökknappen och enterknapp
 
-searchBtn.addEventListener('click', () => {
+searchBtn.addEventListener('click', (event) => {
+    event.preventDefault();
     const query = searchInput.value.trim();
-    if (query) {
-        fetchBroadSearch(query);
-    }
+    console.log(query);
 });
 
 searchInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
-        searchBtn.click();
+        e.preventDefault();
+        searchBtn.click();      
     }
 });
+
+searchBtn.addEventListener("click", function() {
+    const query = searchInput.value.trim();
+    window.location.href = "search.html?s=" + query                
+})
 
 console.log('api end')
