@@ -60,18 +60,3 @@ export function displayMovieData(movieData) {
     
 }
 //    
-
-console.log('display parameters end')
-
-    
-
-
-// this.onload = function fetchMovieData(imdbID) {
-//     const getUrl = new URL(window.location.href)
-//     console.log(getUrl.searchParams.get("data-id"))
-
-//     const imdbUrlParam = new URLSearchParams()
-    
-//     ;
-// }
-

@@ -57,10 +57,31 @@ p {
 }
 
 .movie-card {
+    position: relative;
     width: 33%;
     box-sizing: border-box;
     padding: 10px;
-    text-align: center;
+}
+
+.favBtnToggle {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    top: 20px;
+    right: 20px;
+    size: 64px 64px;
+    border-radius: 25px;
+    background-color:white;
+    border-width: 1px;
+}
+
+.favBtnToggle:hover {
+    opacity: 100%;
+}
+
+.favBtnToggle::after {
+    background-color: #F5C518;
+    opacity: 100%;
 }
 
 .movie-poster {
@@ -76,6 +97,7 @@ p {
     max-width: 1180px;
     margin: 0 auto;
 }
+
 .center {
     margin: 0 auto;
 }

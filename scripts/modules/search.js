@@ -16,7 +16,6 @@ fetch(`http://www.omdbapi.com/?apikey=adc90226&s=${searchInput}`)
 // Printa ut resultat
 
 function displaySearchResults(movies) {
-    console.log(movies)
 
     const searchResults = movies.Search || [];
     const cardContainer = document.getElementById("cardContainer");
@@ -30,6 +29,16 @@ function displaySearchResults(movies) {
         card.addEventListener("click", function() {
             window.location.href = "movie.html?imdbID=" + movie.imdbID                 
         })   
+        // Add to favorites button
+        // const addToFavoritesIcon = document.createElement("img");
+        // addToFavoritesIcon.classList.add("favBtnToggle");
+        // addToFavoritesIcon.setAttribute("src", "res/icons/star-347.png")
+        // card.appendChild(addToFavoritesIcon)
+        // addToFavoritesIcon.addEventListener("click", function() {
+        //     const myFavorites = myFavorites || []
+        //     localStorage.setItem(movies.imdbID);
+        //     console.log(myFavorites)
+        // })
         // Titel element
         const title = document.createElement("h3");
         title.classList.add("movie-title")
@@ -40,17 +49,17 @@ function displaySearchResults(movies) {
         poster.alt = `${movie.Title} poster`;
         poster.classList.add("movie-poster");
         // Add to favorites element
-        const favoriteBtn = document.createElement("button");
-        favoriteBtn.textContent = "Add to Favorites";
-        favoriteBtn.classList.add("favorite-btn");
-        favoriteBtn.addEventListener("click", function(event) {
-            event.stopPropagation(); // Stoppar card.click
-            addToFavorites(movie); 
-        });
-
+        // const favoriteBtn = document.createElement("button");
+        // favoriteBtn.textContent = "Add to Favorites";
+        // favoriteBtn.classList.add("favorite-btn");
+        // favoriteBtn.addEventListener("click", function(event) {
+        //     event.stopPropagation(); // Stoppar card.click
+        //     addToFavorites(movie); 
+        // });
+        // card.appendChild(addToFavoritesIcon);
         card.appendChild(poster);
         card.appendChild(title);
-        card.appendChild(favoriteBtn);
+        // card.appendChild(favoriteBtn);
         cardContainer.appendChild(card);
     });
 

@@ -1,6 +1,4 @@
 
-
-console.log('scripts start')
 if(window.location.pathname === '/' || window.location.pathname === '/index.html') {
     console.log('index.html');
 
@@ -16,4 +14,3 @@ if(window.location.pathname === '/' || window.location.pathname === '/index.html
 }
 
 
-console.log('scripts end')
