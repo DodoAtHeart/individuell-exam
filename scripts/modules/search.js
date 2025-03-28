@@ -26,19 +26,18 @@ function displaySearchResults(movies) {
         const card = document.createElement("div");
         card.classList.add("movie-card");
         card.setAttribute('data-id', movie.imdbID);
-        card.addEventListener("click", function() {
-            window.location.href = "movie.html?imdbID=" + movie.imdbID                 
-        })   
-        // Add to favorites button
-        // const addToFavoritesIcon = document.createElement("img");
-        // addToFavoritesIcon.classList.add("favBtnToggle");
-        // addToFavoritesIcon.setAttribute("src", "res/icons/star-347.png")
-        // card.appendChild(addToFavoritesIcon)
-        // addToFavoritesIcon.addEventListener("click", function() {
-        //     const myFavorites = myFavorites || []
-        //     localStorage.setItem(movies.imdbID);
-        //     console.log(myFavorites)
-        // })
+        
+        const linkOpen = document.createElement("a");
+        linkOpen.setAttribute("href", "movie.html?imdbID=" + movie.imdbID);
+
+        // Add to favorites
+        const addToFavoritesBtn = document.createElement("button");
+        addToFavoritesBtn.classList.add("favBtnToggle");
+        addToFavoritesBtn.innerHTML = "+"
+        addToFavoritesBtn.addEventListener("click", function(event) {
+            event.preventDefault;
+            isFavoriteToggle(event)
+        })
         // Titel element
         const title = document.createElement("h3");
         title.classList.add("movie-title")
@@ -48,26 +47,38 @@ function displaySearchResults(movies) {
         poster.src = movie.Poster;
         poster.alt = `${movie.Title} poster`;
         poster.classList.add("movie-poster");
-        // Add to favorites element
-        // const favoriteBtn = document.createElement("button");
-        // favoriteBtn.textContent = "Add to Favorites";
-        // favoriteBtn.classList.add("favorite-btn");
-        // favoriteBtn.addEventListener("click", function(event) {
-        //     event.stopPropagation(); // Stoppar card.click
-        //     addToFavorites(movie); 
-        // });
-        // card.appendChild(addToFavoritesIcon);
-        card.appendChild(poster);
-        card.appendChild(title);
-        // card.appendChild(favoriteBtn);
+     
+        card.appendChild(linkOpen);
+        linkOpen.appendChild(poster);
+        linkOpen.appendChild(title);
         cardContainer.appendChild(card);
+        card.appendChild(addToFavoritesBtn);
+
     });
+
+let isFavorite = false    
+function isFavoriteToggle(e) {
+    isFavorite = !isFavorite;
+        
+    console.log(e.target.parentNode.getAttribute("data-id"));
+    
+    const imdbID = e.target.parentNode.getAttribute("data-id");
+    const favArray = JSON.parse(localStorage.getItem('favorites')) || [];
+    // Lägg till 
+       if (favArray.includes(imdbID)) {
+            favArray.indexOf(imdbID)
+            favArray.splice(favArray.indexOf(imdbID), 1)
+        } else {
+            favArray.push(imdbID);          
+        }
+        localStorage.setItem('favorites', JSON.stringify(favArray));
+    }
 
     if (searchResults.length === 0) {
         let searchResultsNone = document.createElement('h3');
         searchResultsNone.classList.add('search-result-none');
         searchResultsNone.innerText='Could not find any movies by that name'
-        
+            
         cardContainer.appendChild(searchResultsNone);
     }
 }

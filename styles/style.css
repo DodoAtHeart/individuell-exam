@@ -69,10 +69,12 @@ p {
     height: 42px;
     top: 20px;
     right: 20px;
+    z-index: 99;
     size: 64px 64px;
     border-radius: 25px;
-    background-color:white;
+    background-color: lightgreen;
     border-width: 1px;
+    
 }
 
 .favBtnToggle:hover {
