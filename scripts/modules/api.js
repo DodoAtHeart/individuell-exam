@@ -44,9 +44,9 @@ function getTopList(movies) {
         const card = document.createElement("div");
         card.classList.add("movie-card");
         card.setAttribute('data-id', movie.imdbID);
-        card.addEventListener("click", function() {
-            window.location.href = "movie.html?imdbID=" + movie.imdbID                 
-        })   
+        
+        const linkOpen = document.createElement("a");
+        linkOpen.setAttribute("href", "movie.html?imdbID=" + movie.imdbID);
 
         // Title element
         const title = document.createElement("h3");
@@ -54,9 +54,13 @@ function getTopList(movies) {
         title.textContent = movie.Title;
 
         // Add to favorites element
-        const addToFavoritesIcon = document.createElement("button");
-        addToFavoritesIcon.classList.add("favBtnToggle");
-        addToFavoritesIcon.innerHTML = "+"
+        const addToFavoritesBtn = document.createElement("button");
+        addToFavoritesBtn.classList.add("favBtnToggle");
+        addToFavoritesBtn.innerHTML = "+"
+        addToFavoritesBtn.addEventListener("click", function(event) {
+            event.preventDefault;
+            isFavoriteToggle(event)
+        })
 
         // Poster element
         const poster = document.createElement("img");
@@ -67,10 +71,11 @@ function getTopList(movies) {
 
 
         // Display appended objects
-        card.appendChild(poster);
-        card.appendChild(title);
+        card.appendChild(linkOpen)
+        linkOpen.appendChild(poster);
+        linkOpen.appendChild(title);
         cardContainer.appendChild(card);
-        card.appendChild(addToFavoritesIcon)
+        card.appendChild(addToFavoritesBtn);
     });
 }
 getMovieList()
@@ -78,71 +83,24 @@ getMovieList()
 
 // Add favorite
 
-// gör ett toggle event på facBtnToggle, om värdet är is-favorite true, skicka till localstorage
-// om det är false, ta bort från localstorage favs[]
-function addToFavorites(event) {
-    event.preventDefault();
+let isFavorite = false
 
-    if (e.target.classList.contains('favBtnToggle')) {
-        if (e.target.classList.contains('is-favorite')) {
+function isFavoriteToggle(e) {
+    isFavorite = !isFavorite;
+    
+    console.log(e.target.parentNode.getAttribute("data-id"));
 
-            e.target.classList.remove('is-favorite');
+    const imdbID = e.target.parentNode.getAttribute("data-id");
+    const favArray = JSON.parse(localStorage.getItem('favorites')) || [];
+        // Lägg till 
+        if (favArray.includes(imdbID)) {
+            favArray.indexOf(imdbID)
+            favArray.splice(favArray.indexOf(imdbID), 1)
         } else {
-            // Class add
-            e.target.classList.remove('is-favorite');
+            favArray.push(imdbID);          
         }
-    } 
-    // When favBtnToggle is clicked
-    if(e.target.classList.contains('favBtnToggle')) {
-        console.log('pling')
-    }
+        localStorage.setItem('favorites', JSON.stringify(favArray));
 }
-
-
-// function favToggle(imdbID) {
-
-//     let myFavorites = JSON.parse(localStorage.getItem('myFavorites')) || [];
-//     const favIndex = myFavorites.indexOf(imdbID);
-
-//     if (favIndex === -1) {
-//         myFavorites.push(imdbID);
-//         console.log(`${imdbID} added to favorites`);
-//     } else {
-//         myFavorites.splice(favIndex, 1);
-//         console.log(`${imdbID} has been removed from favorites`)
-//     }
-
-//     localStorage.setItem('myFavorites', JSON.stringify(myFavorites));
-// }
-
-// function addToFavorites(movie) {
-//     let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-
-//     if (!favorites.response(data.imdbID)) {
-//         favorites.setAttribute('favorite-id', movie.imdbID);
-//         favorites.push(movie.imdbID);
-//         localStorage.setItem("favorites", JSON.stringify(favorites));
-
-//         displayFavorites();
-
-//     } else { 
-//         alert("This is already a favorite")
-//     }
-// }
-
-// function displayFavorites() {
-//     const favoritesList = JSON.parse(localStorage.getItem("favoriteMovieList"));
-//     favoritesList.innerHTML = '';
-
-//     const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-
-//     favorites.forEach((movie) => {
-//         const list = document.createElement('li');
-//         list.textContent = movie.Title;
-//         favoritesList.appendChild(list);
-//     })
-// }
-
 
 // End add favorite
 

@@ -12,7 +12,6 @@ fetch(`http://www.omdbapi.com/?apikey=adc90226&i=` + getUrlParam + "&plot=full")
         console.error('Could not fetch data:', error);
     })
 
-
 console.log('display parameters start')
 
 export function displayMovieData(movieData) {
@@ -54,9 +53,4 @@ export function displayMovieData(movieData) {
     movieContainer.appendChild(genre)
     movieContainer.appendChild(plot)
     movieContainer.appendChild(actors)
-
-  
-
-    
-}
-//    
+} 
