@@ -1,4 +1,4 @@
-im
+
 
 const favIndex = JSON.parse(localStorage.getItem('favorites'));
 // console.log(favIndex);
