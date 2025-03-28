@@ -89,19 +89,33 @@ function isFavoriteToggle(e) {
     isFavorite = !isFavorite;
     
     console.log(e.target.parentNode.getAttribute("data-id"));
+    console.log(e.target.previousSibling.lastChild);
+    
 
     const imdbID = e.target.parentNode.getAttribute("data-id");
+    const moviePoster = e.target.previousSibling.firstChild.getAttribute("src");
+    const movieTitle =  e.target.previousSibling.lastChild.innerText;
     const favArray = JSON.parse(localStorage.getItem('favorites')) || [];
-        // Lägg till 
-        if (favArray.includes(imdbID)) {
-            favArray.indexOf(imdbID)
-            favArray.splice(favArray.indexOf(imdbID), 1)
-        } else {
-            favArray.push(imdbID);          
-        }
-        localStorage.setItem('favorites', JSON.stringify(favArray));
+    // Lägg till 
+    let favMovies = {id:imdbID, img:moviePoster, title:movieTitle};
+    const checkMovie = favArray.findIndex(movie => movie.id === imdbID);
+
+
+    if (checkMovie !== -1) {        
+        favArray.splice(checkMovie, 1)
+    } else {
+        favArray.push(favMovies);
+    }
+    localStorage.setItem('favorites', JSON.stringify(favArray));
 }
 
+// function objToStorage(obj, key) {
+//     localStorage.setItem(key, JSON.stringify(obj));
+//   }
+  
+//   export function objFromStorage(key) {
+//     return JSON.parse(localStorage.getItem(key)) || {};
+//   }
 // End add favorite
 
     // Skicka till Search och använd cards
